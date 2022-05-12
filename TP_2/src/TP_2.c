@@ -100,8 +100,8 @@ int main(void) {
 
 
 	Passenger pasajeros[PASAJEROS];
-	eTipo tipos[]={ {0,"P. clase"}, {1,"S. clase"}, {2,"VIP"} };
-	eVuelo vuelos[VUELOS]= { {0,"vuelo1", 1}, {1,"vuelo2", 0}, {2,"vuelo3", 1}, {3,"vuelo4",0} };
+	eTipo tipos[]={ {"P. clase",0}, {"S. clase",1}, {"VIP",2} };
+	eVuelo vuelos[VUELOS]= { {"vuelo1",0,1}, {"vuelo2",1,0}, {"vuelo3",2,1}, {"vuelo4",3,0} };
 
 	int idPasajero=0;
 	int contadorPasajeros=0;
@@ -118,11 +118,6 @@ int main(void) {
 
 		do
 		{
-
-
-
-			//printf("\n prueba: %d", );
-
 
 			//despliegue de opciones del menu
 			printf("\n\n\t ***** MENU PRINCIPAL ***** ");
@@ -185,7 +180,7 @@ int main(void) {
 			case 4 :
 				if( contadorPasajeros>0 )
 				{
-					informar( pasajeros, PASAJEROS);
+					informar( pasajeros, PASAJEROS, vuelos, VUELOS);
 				}
 				else
 				{
@@ -202,17 +197,6 @@ int main(void) {
 					contadorPasajeros++;
 				}
 				break;
-
-
-
-
-
-
-
-
-
-
-
 
 			// SALIDA DEL PROGRAMA
 			case 6 :

@@ -167,6 +167,16 @@ int pointerIsNull(void *p);
  */
 int numericString(char string[]);
 
+void strCleanLeft(char* string, int len );
 
+void strCleanMid(char* string, int len );
+
+void strSpcNot(char* string, int len);
+
+void upperStartName( char* string, int len );
+
+void stringNameFormat(char* string, int len);
+
+void randomString(char* string, int len);
 
 #endif /* PERSONALIO_H_ */

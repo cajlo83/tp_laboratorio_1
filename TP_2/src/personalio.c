@@ -414,3 +414,120 @@ int pointerIsNull(void *p)
 {
 	return !(p);
 }
+
+void strCleanLeft(char* string, int len )
+{
+
+	int i, contador=0;
+
+	for(i=0;i<len;i++){
+		if (string[i]<'a' || string[i]>'z'){
+			contador++;
+		}
+		else{
+			break;
+		}
+	}
+
+
+	for (i=0;i<len-contador;i++){
+		string[i]=string[i+contador];
+	}
+
+
+}
+
+void strCleanMid(char* string, int len )
+{
+	int i, j;
+
+	for(i=0; i<len && string[i]!='\0' ;i++){
+
+		if ( !(string[i]>='a' && string[i]<='z') && string[i]!=' ' ){
+
+			for(j=0; i+j<len; j++){
+				string[i+j]=string[i+j+1];
+			}
+			--i;
+
+		}
+
+	}
+
+}
+
+void strSpcNot(char* string, int len )
+{
+	int i, j;
+	for(i=0; i<len && string[i]!='\0'; i++){
+
+		if( string[i]==' ' && string[i+1]==' ' ){
+
+			for(j=0; i+j<len; j++){
+
+				string[i+j]=string[i+j+1];
+			}
+			i--;
+
+		}
+	}
+}
+
+void upperStartName( char* string, int len )
+{
+	int i;
+
+	string[0]=toupper(string[0]);
+
+	for (i=0; i<len && string[i]!='\0'; i++){
+		if (string[i]==' '){
+			i++;
+			string[i]=toupper(string[i]);
+		}
+	}
+}
+
+void stringNameFormat(char* string, int len)
+{
+	strlwr(string);
+	strCleanLeft( string, len );
+	strCleanMid( string, len );
+	strSpcNot( string, len );
+	upperStartName( string, len );
+
+}
+
+void randomString(char* string, int len)
+{
+	char aux[len];
+	int i, j;
+	int randomLen;
+
+	do
+	{
+		// primer nombre
+		randomLen= randomInt(4, 12 );
+		for( i=0; i<randomLen; i++ )
+		{
+			aux[i]=randomInt(97, 122);
+		}
+
+		// espacio
+		aux[i]= ' ';
+
+		// segundo nombre
+		randomLen= randomInt(4, 12 );
+		for( j=i+1; j<randomLen+i; j++ )
+		{
+			aux[j]=randomInt(97, 122);
+		}
+
+		// fin de string
+		aux[j]= '\n';
+
+	}while( strlen(aux)> len-1  );
+
+	strcpy( string, aux );
+
+}
+

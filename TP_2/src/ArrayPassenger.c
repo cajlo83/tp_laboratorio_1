@@ -23,14 +23,13 @@ int initPassengers(Passenger* list, int len)
 	int i;
 
 	//checks Invalid length
-//	if( sizeof(list)!=(sizeof(Passenger)*len) )
-//	{
-//		printf("problema1");
-//		return -1;
-//	}
-
+	if( len<0 )
+	{
+		return -1;
+	}
 
 	//checks NULL pointer
+
 	for( i=0; i<len ; i++)
 	{
 
@@ -91,19 +90,13 @@ int addPassenger(Passenger* list, int len, int id, char name[],char lastName[],f
 {
 	int i, pos;
 
-//	int comp;
-//
-//
-//	comp=sizeof(list)/sizeof(list[0]);
-//
-//
-//	//checks Invalid length
-//	if( comp != len )
-//	{
-//		printf( "falla 1: %d    %d", sizeof(list) , sizeof(list[0])  );
-//		return -1;
-//	}
-//
+
+	//checks Invalid length
+	if( len<0 )
+	{
+		return -1;
+	}
+
 
 	//checks NULL pointer
 	for( i=0; i<len ; i++)
@@ -239,7 +232,6 @@ void elijeVuelos( char* dest, eVuelo* list, int len )
 
 		for( i=0; i<len; i++ )
 		{
-			printf("\ni=%d",i);
 
 			if( list[i].id==id )
 			{
@@ -274,24 +266,18 @@ void elijeVuelosRandom( char* dest, eVuelo* list, int len )
 
 	do
 	{
-			//muestra los codigos de vuelo antes de solicitar elegir uno
 
-		printVuelos( list,  len);
 		id= randomInt(0, len-1);
 
 		for( i=0; i<len; i++ )
 		{
-			printf("\ni=%d",i);
-
 			if( list[i].id==id )
 			{
-
 				flag=0;
 				break;
 			}
 			else
 			{
-
 				flag=1;
 			}
 
@@ -343,16 +329,22 @@ int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* 
 	char flycode[CODIGO_VUELO];
 
 
-
+	// name
 	stringScan(name, NOMBRE_APELLIDO, "\nIngrese el nombre del pasajero_ ");
+	stringNameFormat( name, NOMBRE_APELLIDO );
+
+	// last name
 	stringScan(lastName, NOMBRE_APELLIDO, "\nIngrese el apellido del pasajero_ ");
+	stringNameFormat( lastName, NOMBRE_APELLIDO );
+
+	//price
 	price= floatScan("\nIngrese monto a cobrar al cliente_ ");
 	printf("\t**tipos de pasajeros disponibles**");
 
-	//tipo
+	//type
 	typePassenger= elijeTipos( tipos, lenTipos );
 
-	//codigo de vuelo
+	// flycode
 	elijeVuelos(flycode, vuelos, lenVuelos);
 
 
@@ -382,6 +374,13 @@ NULL pointer received or passenger not found]
 int findPassengerById(Passenger* list, int len,int id)
 {
 	int i;
+
+
+	//checks Invalid length
+	if( len<0 )
+	{
+		return -1;
+	}
 
 	//checks if pointer received is NULL
 	if( list!=NULL && len>0 )
@@ -455,6 +454,8 @@ void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vu
 
 			case 1 :
 				stringScan(list[index].name, NOMBRE_APELLIDO, "\nIngrese el nuevo nombre del pasajero_ ");
+				stringNameFormat( list[index].name, NOMBRE_APELLIDO );
+
 
 
 				break;
@@ -463,13 +464,13 @@ void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vu
 
 			case 2 :
 				stringScan(list[index].lastName, NOMBRE_APELLIDO, "\nIngrese el nuevo apellido del pasajero_ ");
-
+				stringNameFormat( list[index].lastName, NOMBRE_APELLIDO );
 				break;
 
 
 
 			case 3 :
-				list[index].price= floatScan("\nIngrese el nuevomonto a cobrar al cliente_ ");
+				list[index].price= floatScan("\nIngrese el nuevo monto a cobrar al cliente_ ");
 				break;
 
 
@@ -519,6 +520,12 @@ int removePassenger(Passenger* list, int len, int id)
 
 	index= findPassengerById(list, len, id);
 
+
+	//checks Invalid length
+	if( len<0 )
+	{
+		return -1;
+	}
 
 	//validates results
 	if ( list[index].isEmpty==1 || index==-1 )
@@ -598,6 +605,12 @@ int sortPassengers(Passenger* list, int len, int order)
 
 	int i, j, comp;
 	Passenger eAux;
+
+	//checks Invalid length
+	if( len<0 )
+	{
+		return -1;
+	}
 
 
 	// checks null pointer
@@ -689,7 +702,6 @@ return 0;
 * \return int
 *
 */
-
 int printPassenger(Passenger* list, int length)
 {
 
@@ -715,6 +727,8 @@ return 0;
  */
 void passangersData( Passenger* list, int len)
 {
+
+	// Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio promedio
 	int i;
 	float prom, total=0;
 	int cont=0;
@@ -741,6 +755,8 @@ void passangersData( Passenger* list, int len)
 				fatFish++;
 			}
 		}
+
+		printf("total de los pasajes= %.2f \t promedio de los pasajes= %.2f \t cantidad de pasajeros que pagaron mas del promedio: %d", total, prom, fatFish );
 
 }
 
@@ -843,13 +859,14 @@ return 0;
 }
 
 
+
 /**
  * @brief Passemger's data analysis/information procces
  *
  * @param list
  * @param len
  */
-void informar( Passenger* list, int len)
+void informar( Passenger* list, int len, eVuelo* vuelos, int lenVuelos)
 {
 
 
@@ -877,7 +894,7 @@ void informar( Passenger* list, int len)
 		{
 		//	1. Listado de los pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.
 		case 1 :
-			order= intScan("\nIngrese 1 para orden ascendente, ingrese 0 para orden descendente");
+			order= intScan("\nIngrese 1 para orden ascendente, ingrese 0 para orden descendente_ ");
 			conf= sortPassengers( list,  len,  order);
 			if ( !conf )
 			{
@@ -897,13 +914,12 @@ void informar( Passenger* list, int len)
 
 		//	3. Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
 		case 3 :
-			order= intScan("\nIngrese 1 para orden ascendente, ingrese 0 para orden descendente");
+			order= intScan("\nIngrese 1 para orden ascendente, ingrese 0 para orden descendente_ ");
 			conf= sortPassengersByCode( list,  len,  order);
 			if ( !conf )
 			{
 				 printPassenger( list, len);
 			}
-
 			break;
 
 
@@ -931,13 +947,22 @@ int forceData ( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eV
 	char flycode[CODIGO_VUELO];
 
 
+	// checks null pointer and length
+	if( pointerIsNull( (list) ) && !(len>0) )
+	{
+		return -1;
+	}
 
+	// NAME
+	randomString( name, NOMBRE_APELLIDO);
+	stringNameFormat(name, NOMBRE_APELLIDO);
 
-	strcpy(name, "FNAME");
+	// LASTNAME
+	randomString( lastName, NOMBRE_APELLIDO);
+	stringNameFormat(lastName, NOMBRE_APELLIDO);
 
-	strcpy(lastName, "FLASTNAME");
-
-	price= randomInt(1, 100)*1.3;
+	// price
+	price= randomInt(1, 1000)*1.141592;
 
 	//tipo
 	typePassenger= randomInt(0, lenTipos-1);

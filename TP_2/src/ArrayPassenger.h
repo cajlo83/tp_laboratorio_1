@@ -24,30 +24,25 @@ struct
 char name[NOMBRE_APELLIDO];
 char lastName[NOMBRE_APELLIDO];
 char flycode[CODIGO_VUELO];
-
 float price;
-
 int id;
 int typePassenger;
 int isEmpty;
-
 
 }typedef Passenger;
 
 
 struct
 {
-int id;
 char description[DESCRIPTION];
+int id;
 
 }typedef eTipo;
 
-// estados de vuelos:
-//1 en espera; 2 retrasado; 3 abordando; 4 listo para salir; 5 por despegar; 6 en vuelo
 struct
 {
-int id;
 char code[CODIGO_VUELO];
+int id;
 int estado;
 
 }typedef eVuelo;
@@ -79,7 +74,7 @@ int baja(Passenger* list, int len);
 
 int sortPassengers(Passenger* list, int len, int order);
 
-void informar( Passenger* list, int len);
+void informar( Passenger* list, int len, eVuelo* vuelos, int lenVuelos);
 
 int printPassenger(Passenger* list, int length);
 
