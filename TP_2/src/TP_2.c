@@ -90,7 +90,8 @@
 #include "ArrayPassenger.h"
 
 #define PASAJEROS 2000
-#define TIPOS 2
+#define TIPOS 3
+#define VUELOS 4
 
 
 
@@ -99,7 +100,8 @@ int main(void) {
 
 
 	Passenger pasajeros[PASAJEROS];
-	eCommon tipos[]={ {0,"turista"}, {1,"VIP"} };
+	eTipo tipos[]={ {0,"P. clase"}, {1,"S. clase"}, {2,"VIP"} };
+	eVuelo vuelos[VUELOS]= { {0,"vuelo1", 1}, {1,"vuelo2", 0}, {2,"vuelo3", 1}, {3,"vuelo4",0} };
 
 	int idPasajero=0;
 	int contadorPasajeros=0;
@@ -128,7 +130,7 @@ int main(void) {
 			printf( "\n2\t MODIFICAR" );
 			printf( "\n3\t BAJA" );
 			printf( "\n4\t INFORMAR" );
-			printf( "\n\n5\t CARGA FORZADA x1" );
+			printf( "\n\n5\t CARGA FORZADA (agrega un pasajero con datos aleatorios a la lista)" );
 			printf( "\n6\t *SALIR* " );
 
 			//solicitud a usuario
@@ -141,7 +143,7 @@ int main(void) {
 
 			// ALTA
 			case 1 :
-				if ( alta( pasajeros, PASAJEROS, idPasajero,  tipos, TIPOS ) )
+				if (  alta( pasajeros, PASAJEROS, idPasajero, tipos, TIPOS,  vuelos, VUELOS ) )
 				{
 					idPasajero++;
 					contadorPasajeros++;
@@ -154,7 +156,7 @@ int main(void) {
 			case 2 :
 				if ( contadorPasajeros>0 )
 				{
-					modificar( pasajeros, PASAJEROS,  tipos, TIPOS );
+					modificar( pasajeros, PASAJEROS,  tipos, TIPOS, vuelos, VUELOS );
 				}
 				else
 				{
@@ -194,7 +196,11 @@ int main(void) {
 
 			// CARGA FORZADA
 			case 5 :
-
+				if (  forceData( pasajeros, PASAJEROS, idPasajero, tipos, TIPOS,  vuelos, VUELOS ) )
+				{
+					idPasajero++;
+					contadorPasajeros++;
+				}
 				break;
 
 

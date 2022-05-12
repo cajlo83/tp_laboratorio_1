@@ -135,6 +135,34 @@ int isPair(int num){
 
 }
 
+int intString(char string[])
+{
+	int i;
+	int len;
+	int retorno =-1;
+
+
+	if(string != NULL)
+	{
+		retorno = 1;
+
+		len = strlen(string);
+
+		for(i=0;i<len;i++)
+		{
+			if(isdigit(string[i])==0 )
+			{
+				retorno =0;
+				break;
+
+			}
+		}
+	}
+
+
+	return retorno;
+
+}
 
 
 void stringScan(char string[], int longitud, char *mensaje){
@@ -167,21 +195,81 @@ void stringScan(char string[], int longitud, char *mensaje){
 
 int intScan(char *mensaje){
 
-	int a;
-	printf("%s", mensaje);
-	fflush(stdin);
-	scanf("%d", &a);
-	return a;
+	int retorno;
+	int numerico;
+	char aux[30];
+
+		do
+		{
+		stringScan(aux,30, mensaje);
+		}while( intString(aux)<1 );
+
+	numerico = atoi(aux);
+
+	retorno = numerico;
+
+
+	return retorno;
 
 }
 
+
+int floatString(char string[])
+{
+	int i;
+	int len;
+	int retorno =-1;
+	int puntos=0;
+
+	if(string != NULL)
+	{
+		retorno = 1;
+
+		len = strlen(string);
+
+		for(i=0;i<len;i++)
+		{
+			if ( string[i]=='.' )
+			{
+				puntos++;
+				if( puntos>1 )
+				{
+					retorno =0;
+					break;
+				}
+			}
+			else if(isdigit(string[i])==0 )
+			{
+				retorno =0;
+				break;
+			}
+		}
+	}
+
+
+	return retorno;
+
+}
+
+
 float floatScan(char *mensaje){
 
-	float a;
-	printf("%s", mensaje);
-	fflush(stdin);
-	scanf("%f", &a);
-	return a;
+	float retorno;
+	float numerico;
+	char aux[30];
+
+		do
+		{
+		stringScan(aux,50, mensaje);
+		}while( floatString(aux)<1 );
+
+	numerico = atof(aux);
+
+
+	retorno = numerico;
+
+
+	return retorno;
 
 }
 

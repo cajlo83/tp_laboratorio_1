@@ -40,7 +40,18 @@ struct
 int id;
 char description[DESCRIPTION];
 
-}typedef eCommon;
+}typedef eTipo;
+
+// estados de vuelos:
+//1 en espera; 2 retrasado; 3 abordando; 4 listo para salir; 5 por despegar; 6 en vuelo
+struct
+{
+int id;
+char code[CODIGO_VUELO];
+int estado;
+
+}typedef eVuelo;
+
 
 
 int initPassengers(Passenger* list, int len);
@@ -49,15 +60,18 @@ int searchEmptyPassenger(Passenger* list, int len);
 
 int addPassenger(Passenger* list, int len, int id, char name[],char lastName[],float price,int typePassenger, char flycode[]);
 
-int alta( Passenger* list, int len, int id, eCommon* tipos, int lenTipos );
+void printTipos( eTipo *list, int len );
+
+int elijeTipos( eTipo *list, int len );
+
+
+int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* vuelos, int lenVuelos );
 
 int findPassengerById(Passenger* list, int len,int id);
 
 void printOnePassenger(Passenger ticket);
 
-
-
-void modificar( Passenger* list, int len, eCommon* tipos, int lenTipos );
+void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vuelos, int lenVuelos  );
 
 int removePassenger(Passenger* list, int len, int id);
 
@@ -67,6 +81,17 @@ int sortPassengers(Passenger* list, int len, int order);
 
 void informar( Passenger* list, int len);
 
+int printPassenger(Passenger* list, int length);
+
+void passangersData( Passenger* list, int len);
+
+void printVuelos( eVuelo *list, int len );
+
+void elijeVuelos( char* dest, eVuelo *list, int len );
+
+void elijeVuelosRandom( char* dest, eVuelo *list, int len );
+
+int forceData ( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* vuelos, int lenVuelos );
 
 
 

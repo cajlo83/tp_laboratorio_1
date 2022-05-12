@@ -159,7 +159,13 @@ int randomInt(int minimo, int maximo);
  */
 int pointerIsNull(void *p);
 
-
+/**
+ * @brief validates each character of a string checking if are all numeric chars
+ *
+ * @param string char*
+ * @return 1 if true, 0 if false
+ */
+int numericString(char string[]);
 
 
 
