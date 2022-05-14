@@ -147,7 +147,7 @@ int main(void) {
 				break;
 
 
-			// BAJA
+			// MODIFICAR
 			case 2 :
 				if ( contadorPasajeros>0 )
 				{
@@ -160,7 +160,7 @@ int main(void) {
 				break;
 
 
-			// MODIFICAR
+			// BAJA
 			case 3 :
 				if( contadorPasajeros>0 )
 				{

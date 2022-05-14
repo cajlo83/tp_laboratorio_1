@@ -12,6 +12,14 @@
 #define CODIGO_VUELO 10
 #define DESCRIPTION 15
 
+#define ESTADO_BIEN 100
+#define ESTADO_DEMORADO 200
+#define ESTADO_ABORDADO 300
+#define ESTADO_NO_ABORDADO 400
+#define ESTADO_OTRO 500
+#define ESTADO_ACTIVO 600
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -27,6 +35,7 @@ char flycode[CODIGO_VUELO];
 float price;
 int id;
 int typePassenger;
+int flyState;
 int isEmpty;
 
 }typedef Passenger;
@@ -39,6 +48,7 @@ int id;
 
 }typedef eTipo;
 
+// estructura util para posibles versiones
 struct
 {
 char code[CODIGO_VUELO];
@@ -59,6 +69,7 @@ void printTipos( eTipo *list, int len );
 
 int elijeTipos( eTipo *list, int len );
 
+int elijeEstadoVuelo( void );
 
 int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* vuelos, int lenVuelos );
 

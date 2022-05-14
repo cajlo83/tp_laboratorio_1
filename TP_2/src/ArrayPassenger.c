@@ -131,10 +131,10 @@ int addPassenger(Passenger* list, int len, int id, char name[],char lastName[],f
 
 	//no more empty
 	list[pos].isEmpty=0;
-
-	//anouncement of new ticket
-	printf( "\nSe cargo el usuario:" );
-	printOnePassenger(list[pos]);
+//
+//	//anouncement of new ticket
+//	printf( "\nSe cargo el usuario:" );
+//	printOnePassenger(list[pos]);
 
 	return 0;
 }
@@ -299,15 +299,115 @@ void elijeVuelosRandom( char* dest, eVuelo* list, int len )
  */
 void printOnePassenger(Passenger ticket)
 {
+	int aux;
+
 	printf( "\nID: %d", ticket.id );
-	printf( "\tName: %s", ticket.name );
-	printf( "\tLastName: %s", ticket.lastName );
-	printf("\tPrice: %.2f", ticket.price);
-	printf("\tTypeCode: %d", ticket.typePassenger);
-	printf("\tFlyCode: %s", ticket.flycode);
+	printf( "\t|Name: %s", ticket.name );
+	printf( "\t|LastName: %s", ticket.lastName );
+	printf( "\t|Price: %.2f", ticket.price );
+	printf( "\t|TypeCode: %d", ticket.typePassenger );
+	printf( "\t|FlyCode: %s", ticket.flycode );
+
+
+	aux= ticket.flyState;
+	switch( aux )
+	{
+			// ESTADO_BIEN 100
+	case ESTADO_BIEN :
+		printf( "\t|FlyState: ESTADO_BIEN " );
+		break;
+
+			// ESTADO_DEMORADO 200
+	case ESTADO_DEMORADO :
+		printf( "\t|FlyState: ESTADO_DEMORADO " );
+		break;
+
+		// ESTADO_ABORDADO 300
+	case ESTADO_ABORDADO :
+		printf( "\t|FlyState: ESTADO_ABORDADO " );
+		break;
+
+		// ESTADO_NO_ABORDADO 400
+	case ESTADO_NO_ABORDADO :
+		printf( "\t|FlyState: ESTADO_NO_ABORDADO " );
+		break;
+
+		// ESTADO_OTRO 500
+	case ESTADO_OTRO :
+		printf( "\t|FlyState: ESTADO_OTRO " );
+		break;
+
+		// ESTADO_ACTIVO 600
+	case ESTADO_ACTIVO :
+		printf( "\t|FlyState: ESTADO_ACTIVO " );
+		break;
+
+
+
+	default:
+		printf("\t|FlyState: ERROR ");
+
+	}
+
 
 
 }
+
+
+
+/**
+ * @brief select the FlyStatus shown from a list
+ *
+ * @return int
+ */
+int elijeEstadoVuelo( void )
+{
+	int flag=1;
+	int retorno= -1;
+
+	do
+	{
+			//muestra los tipos de pasajeros antes de solicitar elegir uno
+
+		printf("\nEstados de vuelo disponibles:");
+
+		// ESTADO_BIEN 100
+		printf("\n%d | ESTADO_BIEN",ESTADO_BIEN);
+		// ESTADO_DEMORADO 200
+		printf("\n%d | ESTADO_DEMORADO",ESTADO_DEMORADO);
+		// ESTADO_ABORDADO 300
+		printf("\n%d | ESTADO_ABORDADO",ESTADO_ABORDADO);
+		// ESTADO_NO_ABORDADO 400
+		printf("\n%d | ESTADO_NO_ABORDADO",ESTADO_NO_ABORDADO);
+		// ESTADO_OTRO 500
+		printf("\n%d | ESTADO_OTRO",ESTADO_OTRO);
+		// ESTADO_ACTIVO 600
+		printf("\n%d | ESTADO_ACTIVO",ESTADO_ACTIVO);
+
+		retorno= intScan("\nIngrese estado de vuelo del pasajero_ ");
+
+
+		switch( retorno )
+		{
+		case ESTADO_BIEN :
+		case ESTADO_DEMORADO :
+		case ESTADO_ABORDADO :
+		case ESTADO_NO_ABORDADO :
+		case ESTADO_OTRO :
+		case ESTADO_ACTIVO :
+			flag=0;
+			break;
+
+		default:
+			printf("\nNo ingreso un estado de vuelo valido.");
+
+		}
+
+	}while( flag );
+
+	return retorno;
+}
+
 
 /**
  * @brief Passemger's signing up procces
@@ -322,11 +422,15 @@ void printOnePassenger(Passenger ticket)
 int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* vuelos, int lenVuelos )
 {
 
+
 	char name[NOMBRE_APELLIDO];
 	char lastName[NOMBRE_APELLIDO];
+	char flycode[CODIGO_VUELO];
 	float price;
 	int typePassenger;
-	char flycode[CODIGO_VUELO];
+	int flyState;
+
+	int index;
 
 
 	// name
@@ -347,6 +451,12 @@ int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* 
 	// flycode
 	elijeVuelos(flycode, vuelos, lenVuelos);
 
+	// flyState
+	flyState= elijeEstadoVuelo();
+
+
+
+
 
 
 	//2.1
@@ -354,6 +464,23 @@ int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* 
 	{
 		printf( "\nno fue posible el alta del usuario" );
 		return 0;
+	}
+	else
+	{
+
+
+		/*
+		 * NOTA: el dado de flyState se deja por fuera de addPassenger() debido a la consigna: (!) No se deben modificar los prototipos de las funciones dadas en el enunciado
+		 */
+
+		// add FlyState
+		index= findPassengerById( list,  len, id);
+		list[index].flyState= flyState;
+
+
+		//anouncement of new ticket
+		printf( "\nSe cargo el usuario:" );
+		printOnePassenger(list[index]);
 	}
 
 
@@ -442,7 +569,9 @@ void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vu
 			printf( "\n3\t PRECIO" );
 			printf( "\n4\t TIPO" );
 			printf( "\n5\t CODIGO DE VUELO");
-			printf( "\n\n6\t *SALIR* " );
+
+			printf( "\n\n6\t ESTADO DE VUELO");
+			printf( "\n7\t *SALIR* " );
 
 			//request to user
 			menu= intScan("\nOPCION_ ");
@@ -488,10 +617,17 @@ void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vu
 				break;
 
 
-
-
-
 			case 6 :
+
+				list[index].flyState= elijeEstadoVuelo(); //(list[index].flycode, vuelos, lenVuelos);
+				//stringScan(list[index].flycode, CODIGO_VUELO, "\nIngrese el nuevocodigo de vuelo_ ");
+				break;
+
+
+
+
+
+			case 7 :
 
 				printf("\n\t ***** SaLIENDO DE MODIFICAR ***** ");
 				break;
@@ -500,7 +636,7 @@ void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vu
 				printf("No se reicibio un valor esperado, reintente");
 			}
 
-		}while( menu!=6 );
+		}while( menu!=7 );
 	}
 
 }
@@ -606,15 +742,9 @@ int sortPassengers(Passenger* list, int len, int order)
 	int i, j, comp;
 	Passenger eAux;
 
-	//checks Invalid length
-	if( len<0 )
-	{
-		return -1;
-	}
 
-
-	// checks null pointer
-	if( pointerIsNull( (list) ) )
+	// checks null pointer and length
+	if( pointerIsNull( (list) ) || !(len>0) )
 	{
 		return -1;
 	}
@@ -807,7 +937,8 @@ int sortPassengersByCode(Passenger* list, int len, int order)
 					list[i]=list[j];
 					list[j]=eAux;
 				}
-				else if( comp==0 && (list[i].typePassenger>list[j].typePassenger) )
+				// compares x2
+				else if( comp==0 && (list[i].flyState<list[j].flyState) )
 				{
 					eAux=list[i];
 					list[i]=list[j];
@@ -838,7 +969,8 @@ int sortPassengersByCode(Passenger* list, int len, int order)
 					list[i]=list[j];
 					list[j]=eAux;
 				}
-				else if( comp==0 && (list[i].typePassenger>list[j].typePassenger) )
+				// compares x2
+				else if( comp==0 && (list[i].flyState>list[j].flyState) )
 				{
 					eAux=list[i];
 					list[i]=list[j];
@@ -945,10 +1077,13 @@ int forceData ( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eV
 	float price;
 	int typePassenger;
 	char flycode[CODIGO_VUELO];
+	int flyState;
+
+	int index;
 
 
 	// checks null pointer and length
-	if( pointerIsNull( (list) ) && !(len>0) )
+	if( pointerIsNull( (list) ) || !(len>0) )
 	{
 		return -1;
 	}
@@ -970,6 +1105,12 @@ int forceData ( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eV
 	//codigo de vuelo
 	elijeVuelosRandom(flycode, vuelos, lenVuelos);
 
+	// flyState
+	flyState= randomInt(1, 6);
+	flyState*= 100;
+
+
+
 
 
 	//2.1
@@ -978,6 +1119,24 @@ int forceData ( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eV
 		printf( "\nno fue posible el alta del usuario" );
 		return 0;
 	}
+	else
+		{
+
+
+			/*
+			 * NOTA: el dado de flyState se deja por fuera de addPassenger() debido a la consigna: (!) No se deben modificar los prototipos de las funciones dadas en el enunciado
+			 */
+
+			// add FlyState
+			index= findPassengerById( list,  len, id);
+			list[index].flyState= flyState;
+
+
+			//anouncement of new ticket
+			printf( "\nSe cargo el usuario:" );
+			printOnePassenger(list[index]);
+		}
+
 
 
 	return 1;
