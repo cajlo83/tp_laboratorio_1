@@ -9,15 +9,6 @@
 #include "ArrayPassenger.h"
 
 
-
-/** \brief To indicate that all position in the array are empty,
-* this function put the flag (isEmpty) in TRUE in all
-* position of the array
-* \param list Passenger* Pointer to array of passenger
-* \param len int Array length
-* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
-*
-*/
 int initPassengers(Passenger* list, int len)
 {
 	int i;
@@ -51,13 +42,6 @@ int initPassengers(Passenger* list, int len)
 	return 0;
 }
 
-/**
- * @brief seeks for an empty spot in the arrray
- *
-* \param list Passenger* Pointer to array of passenger
-* \param len int Array length
- * @return return (-1) if no empty space found, if ok returns the seeked position
- */
 int searchEmptyPassenger(Passenger* list, int len)
 {
 	int i;
@@ -73,19 +57,6 @@ int searchEmptyPassenger(Passenger* list, int len)
 	return -1;
 }
 
-/** \brief add in a existing list of passengers the values received as parameters
-* in the first empty position
-* \param list passenger*
-* \param len int
-* \param id int
-* \param name[] char
-* \param lastName[] char
-* \param price float
-* \param typePassenger int
-* \param flycode[] char
-* \return int Return (-1) if Error [Invalid length or NULL pointer or without
-* free space] - (0) if Ok
-*/
 int addPassenger(Passenger* list, int len, int id, char name[],char lastName[],float price,int typePassenger, char flycode[])
 {
 	int i, pos;
@@ -131,19 +102,10 @@ int addPassenger(Passenger* list, int len, int id, char name[],char lastName[],f
 
 	//no more empty
 	list[pos].isEmpty=0;
-//
-//	//anouncement of new ticket
-//	printf( "\nSe cargo el usuario:" );
-//	printOnePassenger(list[pos]);
 
 	return 0;
 }
 
-/** \brief print the content of eTipo array
-*
-* \param list list
-* \param length int
-*/
 void printTipos( eTipo *list, int len )
 {
 	int i;
@@ -154,13 +116,6 @@ void printTipos( eTipo *list, int len )
 
 }
 
-/**
- * @brief select the type ID shown from a list
- *
- * @param list eTipo*
- * @param len	list's lenght
- * @return the type's ID
- */
 int elijeTipos( eTipo *list, int len )
 {
 	int flag, i;
@@ -191,15 +146,6 @@ int elijeTipos( eTipo *list, int len )
 	return retorno;
 }
 
-
-
-
-
-/** \brief print the content of eTipo array
-*
-* \param list list
-* \param length int
-*/
 void printVuelos( eVuelo *list, int len )
 {
 	int i;
@@ -212,12 +158,6 @@ void printVuelos( eVuelo *list, int len )
 
 }
 
-/**
- * @brief select the flight ID shown from a list
- *
- * @param list eTipo*
- * @param len	list's lenght
- */
 void elijeVuelos( char* dest, eVuelo* list, int len )
 {
 	int flag;
@@ -253,12 +193,6 @@ void elijeVuelos( char* dest, eVuelo* list, int len )
 
 }
 
-/**
- * @brief randomly select the flight ID shown from a list
- *
- * @param list eTipo*
- * @param len	list's lenght
- */
 void elijeVuelosRandom( char* dest, eVuelo* list, int len )
 {
 	int flag;
@@ -289,17 +223,10 @@ void elijeVuelosRandom( char* dest, eVuelo* list, int len )
 
 }
 
-
-
-
-/**
- * @brief print's the data from a Passenger struct
- *
- * @param ticket Passenger struct
- */
 void printOnePassenger(Passenger ticket)
 {
 	int aux;
+
 
 	printf( "\nID: %d", ticket.id );
 	printf( "\t|Name: %s", ticket.name );
@@ -353,13 +280,6 @@ void printOnePassenger(Passenger ticket)
 
 }
 
-
-
-/**
- * @brief select the FlyStatus shown from a list
- *
- * @return int
- */
 int elijeEstadoVuelo( void )
 {
 	int flag=1;
@@ -408,17 +328,6 @@ int elijeEstadoVuelo( void )
 	return retorno;
 }
 
-
-/**
- * @brief Passemger's signing up procces
- *
- * @param list Ppassenger*
- * @param len (passenger*) lenght
- * @param id passenger's id
- * @param tipos
- * @param lenTipos
- * @return return 1 if ok, 0 if not
- */
 int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* vuelos, int lenVuelos )
 {
 
@@ -488,16 +397,6 @@ int alta( Passenger* list, int len, int id, eTipo* tipos, int lenTipos, eVuelo* 
 
 }
 
-
-/** \brief find a Passenger by Id and returns the index position in array.
-*
-* \param list Passenger*
-* \param len int
-* \param id int
-* \return Return passenger index position or (-1) if [Invalid length or
-NULL pointer received or passenger not found]
-*
-*/
 int findPassengerById(Passenger* list, int len,int id)
 {
 	int i;
@@ -525,14 +424,6 @@ int findPassengerById(Passenger* list, int len,int id)
 	return -1;
 }
 
-/**
- * @brief Passemger's modification procces
- *
- * @param list Passenger*
- * @param len list's lenght
- * @param tipos eTipos*
- * @param lenTipos tipo's lenght
- */
 void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vuelos, int lenVuelos  )
 {
 	int idBuscado, menu, index;
@@ -613,14 +504,12 @@ void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vu
 			case 5 :
 
 				elijeVuelos(list[index].flycode, vuelos, lenVuelos);
-				//stringScan(list[index].flycode, CODIGO_VUELO, "\nIngrese el nuevocodigo de vuelo_ ");
 				break;
 
 
 			case 6 :
 
-				list[index].flyState= elijeEstadoVuelo(); //(list[index].flycode, vuelos, lenVuelos);
-				//stringScan(list[index].flycode, CODIGO_VUELO, "\nIngrese el nuevocodigo de vuelo_ ");
+				list[index].flyState= elijeEstadoVuelo(); ;
 				break;
 
 
@@ -641,15 +530,6 @@ void modificar( Passenger* list, int len, eTipo* tipos, int lenTipos, eVuelo* vu
 
 }
 
-/** \brief Remove a Passenger by Id (put isEmpty Flag in 1)
-*
-* \param list Passenger*
-* \param len int
-* \param id int
-* \return int Return (-1) if Error [Invalid length or NULL pointer or if can't
-find a passenger] - (0) if Ok
-*
-*/
 int removePassenger(Passenger* list, int len, int id)
 {
 	int index, conf;
@@ -692,11 +572,6 @@ int removePassenger(Passenger* list, int len, int id)
 	return -1;
 }
 
-/** \brief Passemger's signing down procces
-*
-* \param list Passenger*
-* \param len int
-*/
 int baja(Passenger* list, int len )
 {
 
@@ -721,21 +596,6 @@ int baja(Passenger* list, int len )
 
 }
 
-
-
-/*
- * Ordena el array de pasajeros por apellido y tipo de pasajero de manera ascendente o
- * descendente.
- */
-/** \brief Sort the elements in the array of passengers, the argument order
-indicate UP or DOWN order
-*
-* \param list Passenger*
-* \param len int
-* \param order int [1] indicate UP - [0] indicate DOWN
-* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
-*
-*/
 int sortPassengers(Passenger* list, int len, int order)
 {
 
@@ -825,13 +685,6 @@ int sortPassengers(Passenger* list, int len, int order)
 return 0;
 }
 
-/** \brief print the content of passengers array
-*
-* \param list Passenger*
-* \param length int
-* \return int
-*
-*/
 int printPassenger(Passenger* list, int length)
 {
 
@@ -849,12 +702,6 @@ int printPassenger(Passenger* list, int length)
 return 0;
 }
 
-/**
- * @brief show's financial data from list
- *
- * @param list Passenger*
- * @param len list's lenght
- */
 void passangersData( Passenger* list, int len)
 {
 
@@ -890,15 +737,6 @@ void passangersData( Passenger* list, int len)
 
 }
 
-/** \brief Sort the elements in the array of passengers, the argument order
-indicate UP or DOWN order
-*
-* \param list Passenger*
-* \param len int
-* \param order int [1] indicate UP - [0] indicate DOWN
-* \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
-*
-*/
 int sortPassengersByCode(Passenger* list, int len, int order)
 {
 
@@ -990,14 +828,6 @@ int sortPassengersByCode(Passenger* list, int len, int order)
 return 0;
 }
 
-
-
-/**
- * @brief Passemger's data analysis/information procces
- *
- * @param list
- * @param len
- */
 void informar( Passenger* list, int len, eVuelo* vuelos, int lenVuelos)
 {
 

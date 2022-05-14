@@ -378,12 +378,12 @@ void repetidosVectorEntero(int vector[], int len){
 	}
 }
 
-void cleanIntArray(int vector[], int len){
+void cleanIntArray(int vector[], int len, int num){
 
 	int i;
 
 	for(i=0;i<len;i++){
-		vector[i]=0;
+		vector[i]=num;
 	}
 
 }

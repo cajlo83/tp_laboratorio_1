@@ -131,13 +131,20 @@ void vecIntSort(int vector[], int len, int dir);
 void repetidosVectorEntero(int vector[], int len);
 
 /**
- * @brief inicializa los valores de un vector tipo int
-  *
- * @param vector nombre del vector
- * @param len tamaño del vector
+ * @brief sets all vector's slots with num
+ *
+ * @param vector int*
+ * @param len vector's length
+ * @param num int
  */
-void cleanIntArray(int vector[], int len);
+void cleanIntArray(int vector[], int len, int num);
 
+/**
+ * @brief sets
+ *
+ * @param vector
+ * @param len
+ */
 void cleanCharArray(char vector[], int len);
 
 /**
@@ -167,16 +174,52 @@ int pointerIsNull(void *p);
  */
 int numericString(char string[]);
 
+/**
+ * @brief removes not alpha character in the left side of a string
+ *
+ * @param string char*
+ * @param len string's length
+ */
 void strCleanLeft(char* string, int len );
 
+/**
+ * @brief removes not alpha and not ' ' character in the middle side of a string
+ *
+ * @param string char*
+ * @param len string's length
+ */
 void strCleanMid(char* string, int len );
 
+/**
+ * @brief removes extra ' ' character in the middle side of a string
+ *
+ * @param string char*
+ * @param len string's length
+ */
 void strSpcNot(char* string, int len);
 
+/**
+ * @brief sets string from "this format" to "This Format"
+ *
+ * @param string char*
+ * @param len string's length
+ */
 void upperStartName( char* string, int len );
 
+/**
+ * @brief sets string from "laST_NamE naMe" to "Last_name Name"
+ *
+ * @param string char*
+ * @param len string's length
+ */
 void stringNameFormat(char* string, int len);
 
+/**
+ * @brief sets a random string
+ *
+ * @param string char*
+ * @param len string's length
+ */
 void randomString(char* string, int len);
 
 #endif /* PERSONALIO_H_ */
