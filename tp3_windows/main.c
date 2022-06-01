@@ -22,7 +22,12 @@
 
 int main()
 {
-    int option = 0;
+	setbuf( stdout, NULL );
+
+
+
+	/*
+    int option = 1;
 
     LinkedList* listaPasajeros = ll_newLinkedList();
     do{
@@ -34,5 +39,7 @@ int main()
         }
     }while(option != 10);
     return 0;
+    */
+
 }
 
