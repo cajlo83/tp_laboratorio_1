@@ -1,22 +1,52 @@
+/*
+ * autor: Carlo Morici
+ * tittle: tp3
+ * date: 08/06/2022
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <string.h>
+
+#include "personalio.h"
+
 #include "LinkedList.h"
 #include "Controller.h"
 #include "Passenger.h"
+#include "ArrayPassenger.h"
 
-/****************************************************
-    Menu:
-     1. Cargar los datos de los pasajeros desde el archivo data.csv (modo texto).
-     2. Cargar los datos de los pasajeros desde el archivo data.csv (modo binario).
-     3. Alta de pasajero
-     4. Modificar datos de pasajero
-     5. Baja de pasajero
-     6. Listar pasajeros
-     7. Ordenar pasajeros
-     8. Guardar los datos de los pasajeros en el archivo data.csv (modo texto).
-     9. Guardar los datos de los pasajeros en el archivo data.csv (modo binario).
-    10. Salir
-*****************************************************/
+
+#define CARGA_TXT 1
+#define CARGA_BIN 2
+#define ALTA_PASAJERO 3
+#define MODIFICAR_PASAJERO 4
+#define BAJA_PASAJERO 5
+#define LISTAR_PASAJEROS 6
+#define ORDENAR_PASAJEROS 7
+#define GUARDA_TXT 8
+#define GUARDA_BIN 9
+#define EXIT_MAIN 10
+
+#define RESERVA_MEMORIA 20
+
+#define VUELOS 4
+#define TIPOS 4
+
+/*
+BA2491A - Aterrizado
+IB0800A - Aterrizado
+MM0987B  - En Horario
+TU6789B  - Aterrizado
+GU2345F  - En Vuelo
+HY4567D  - Demorado
+FR5678G  - En Horario
+BR3456J -  Demorado
+*/
+
+
 
 
 
@@ -26,20 +56,90 @@ int main()
 
 
 
-	/*
-    int option = 1;
+	// variables genericas
+	int option;
+//	int typeAux, statusAux;
 
-    LinkedList* listaPasajeros = ll_newLinkedList();
+	// declaracion de la lista
+	LinkedList* listaPasajeros_txt = NULL;
+	LinkedList* listaPasajeros_bin = NULL;
+	//Passenger** aux_PassengerPointPoint;
+
+
+
+	/*
+	 * INICIALIZO LA LINKED LIST
+	 */
+
+	listaPasajeros_txt = ll_newLinkedList();
+
+
+
     do{
+
+
+
+
+
+
+    	// despliegue de opciones del menu
+    	printf("\n\n\t ***** MENU PRINCIPAL ***** ");
+    	printf( "\n1\t Cargar los datos de los pasajeros desde el archivo data.csv (modo texto)." );
+    	printf( "\n2\t Cargar los datos de los pasajeros desde el archivo data.csv (modo binario)." );
+    	printf( "\n3\t Alta de pasajero." );
+    	printf( "\n4\t Modificar datos de pasajeros." );
+    	printf( "\n5\t Baja de pasajero." );
+    	printf( "\n6\t Listar pasajeros." );
+    	printf( "\n7\t Ordenar pasajeros." );
+    	printf( "\n8\t Guardar los datos de los pasajeros en el archivo data.csv (modo texto)." );
+    	printf( "\n9\t Guardar los datos de los pasajeros en el archivo data.csv (modo binario)." );
+
+    	printf( "\n\n10\t *SALIR* " );
+
+    				//solicitud a usuario
+    	option= intScan("\nOPCION_ ");
+
+
         switch(option)
         {
-            case 1:
-                controller_loadFromText("data.csv",listaPasajeros);
+            case CARGA_TXT :
+
+            	 controller_loadFromText( "data.csv" ,  listaPasajeros_txt);
+
                 break;
+
+            case GUARDA_BIN :
+
+            	break;
+
+            	break;
         }
     }while(option != 10);
     return 0;
-    */
+
 
 }
+/*
+Passenger* Passenger_new()
+{
+	Passenger * puntero;
 
+
+	 puntero =  (Passenger*)malloc(sizeof(Passenger));
+
+	 if(puntero !=NULL)
+	 {
+		strcpy( puntero->apellido  ," ");
+		strcpy( puntero->nombre ," ");
+		puntero->dni = 0;
+
+
+	 }
+
+
+
+
+	return puntero;
+
+}
+*/
