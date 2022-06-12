@@ -222,4 +222,6 @@ void stringNameFormat(char* string, int len);
  */
 void randomString(char* string, int len);
 
+int FILE_close( FILE* pArch );
+
 #endif /* PERSONALIO_H_ */

@@ -380,7 +380,6 @@ void elijeVuelosRandom( char* dest, eVuelo* list, int len )
 int passenger_statusDecoder(int int_status, char* str )
 {
 	int retorno;
-	char strAux[20];
 
 	if( pointerIsNull(str) )
 	{

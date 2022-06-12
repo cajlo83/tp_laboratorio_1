@@ -56,7 +56,7 @@ int intVerify(int numero, int minimo, int maximo){
 	}
 
 
-	return retornador; //retorna 1 porque no se cumplieron las condiciones deseadas
+	return retornador;
 
 }
 
@@ -283,18 +283,6 @@ void vecIntScan(int vector[], int size){
 	}
 
 }
-//
-//int menu( char opciones[]  ){
-//	int opcion;
-//
-//	printf( opciones );
-//
-//	printf("\nOpcion: ");
-//	fflush(stdin);
-//	scanf("%d", &opcion);
-//
-//	return opcion;
-//}
 
 
 
@@ -528,6 +516,15 @@ void randomString(char* string, int len)
 	}while( strlen(aux)> len-1  );
 
 	strcpy( string, aux );
-
 }
 
+int FILE_close( FILE* pArch)
+{
+	if( pArch!=NULL )
+	{
+		fclose(pArch);
+	}
+
+
+	return !pArch;
+}

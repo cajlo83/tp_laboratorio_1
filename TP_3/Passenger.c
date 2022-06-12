@@ -19,6 +19,7 @@ Passenger* Passenger_newParametros(char* char_id,char* char_name,char* char_last
 	Passenger* passengerAux;
 	float priceAux;
 
+
 	//int statusAux, tipoAux;
 
 	//asignacion de memoria al auxiliar
