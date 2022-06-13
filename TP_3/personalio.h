@@ -222,6 +222,20 @@ void stringNameFormat(char* string, int len);
  */
 void randomString(char* string, int len);
 
-int FILE_close( FILE* pArch );
+/**
+ * @brief closes a file if its open
+ *
+ * @param pArch file pointer
+ * @return 1 if ok, 0 if error
+ */
+int FILE_close( FILE* pArch);
+
+/**
+ * @brief closes a pointer if its open
+ *
+ * @param p pointer
+ * @return 1 if ok, 0 if error
+ */
+int pFree( void* p );
 
 #endif /* PERSONALIO_H_ */

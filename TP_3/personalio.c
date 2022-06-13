@@ -528,3 +528,15 @@ int FILE_close( FILE* pArch)
 
 	return !pArch;
 }
+
+int pFree( void* p )
+{
+	if( p!=NULL )
+	{
+		free(p);
+	}
+
+
+	return !p;
+
+}

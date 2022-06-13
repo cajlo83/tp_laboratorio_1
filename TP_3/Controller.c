@@ -4,27 +4,65 @@
 #include "Controller.h"
 
 /**
- * @brief set's initial new ID
+ * @brief set's initial data for files and future id's
  *
  * @param pathTxt txt path file
  * @param pathBin binary path file
- * @return 1 if ok
+ * @return max id, -1 if error
  */
 int initConfig(char* pathTxt, char* pathBin)
 {
-	int retorno= 1;
-	int cant;
-	FILE* pTxt, pBin;
-	// se abre en modo "a" para ubicarnos al final del archivo
-	pTxt=fopen(pathTxt, "r");
-	pTxt=fopen(pathTxt, "rb");
+	int retorno;
+	int cant, i;
+	int idBin= -1;
+	int idTxt= -1;
 
-	Passenger* passengerAux0= Passenger_new();
+	FILE* pTxt= NULL;
+	FILE* pBin= NULL;
 
+	Passenger* 	passengerAux0= Passenger_new();
+
+	static int size_Passenger= sizeof(Passenger);
+
+	// variables tipo caracter donde recibir los datos del archivo
+	char str_id[10];
+	char str_name[NOMBRE_APELLIDO];
+	char str_lastName[NOMBRE_APELLIDO];
+	char str_flycode[CODIGO_VUELO];
+	char str_price[20];
+	char str_typePassenger[20];
+	char str_statusFlight[20];
+
+
+
+	/*
+	 * verificaciones de archivo binario
+	 */
+
+	// apertura del archivo con "rb"
+	pTxt =fopen(pathTxt, "rb");
 	if( pBin==NULL )
 	{
-		printf("\nError abriento archivo bin")
-;
+		// si el archivo no existe debe crearse con "wb"
+		printf("\nNo existe archivo bin");
+		pTxt=fopen(pathTxt, "wb");
+
+		if( pTxt==NULL )
+		{
+			printf( "\nError en creacion de archivo binario, reintente luego" );
+			idBin=-1;
+		}
+		else
+		{
+			// cierre de archivo en "wb"
+			if(FILE_close( pTxt ))
+			{
+				printf( "\nError en cierre de archivo binario" );
+			}
+
+			idBin= 0;
+		}
+
 	}
 	else
 	{
@@ -32,40 +70,114 @@ int initConfig(char* pathTxt, char* pathBin)
 		fseek ( pBin , 0 , SEEK_END );
 		fseek ( pBin , (long) (-1)*sizeof (Passenger) , SEEK_CUR );
 
-		// se crea direccion de memoria para pasajero a leer
-		passengerAux0= Passenger_new();
 
 		// se guardan datos de pasajero en nueva direccion
-		cant=fread(passengerAux0,size_Passenger ,1,pFileBin);
+		cant=fread(passengerAux0,size_Passenger ,1,pBin);
 
-		if(cant!=1)
+		// se verifica posibilidad de guardar el dato
+		if(cant==1)
 		{
-			printf("\nProblemas en archivo binario");
+			Passenger_getId(passengerAux0, &idBin);
 		}
 		else
 		{
-
+			printf("\nProblemas de lectura con archivo binario");
+			idBin= -1;
 		}
 
+
+		// cierre de archivo en "rb"
+		if(FILE_close( pTxt ))
+		{
+			printf( "\nError en cierre de archivo binario" );
+		}
 
 	}
 
 
+	/*
+	 * verificaciones de archivo csv
+	 */
+
+	// apertura del archivo con "r"
+	pTxt =fopen(pathBin, "r");
 	if( pTxt==NULL )
 	{
-		printf("\nError abriento archivo txt")
+		// si el archivo no existe debe crearse con "w"
+		printf("\nNo existe archivo bin");
+		pTxt=fopen(pathTxt, "w");
+
+		if( pTxt==NULL )
+		{
+			printf( "\nError en creacion de archivo csv, reintente luego" );
+
+			idTxt= -1;
+		}
+		else
+		{
+			// se creo el archivo y se agregan los titulos
+			fprintf(pTxt, "id,name,lastname,price,flycode,typePassenger,statusFlight\n");
+
+			// cierre de archivo en "w"
+			if(FILE_close( pTxt  ))
+			{
+				printf( "\nError en cierre de archivo csv" );
+			}
+
+			idTxt= 0;
+		}
 
 	}
 	else
 	{
-		// se leen los datos del archivo de texto
-		while(!feof(ptxt) )
+
+		//lectura de archivo
+
+		// Falso escaneo para titulo
+		fscanf(pTxt, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", str_id, str_name, str_lastName,str_price, str_flycode, str_typePassenger,str_statusFlight );
+
+
+		i=0;
+		while(!feof(pTxt ))
+		{
+
+			   /* Lee los datos */
+
+			cant=fscanf(pTxt, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", str_id, str_name, str_lastName,str_price, str_flycode, str_typePassenger,str_statusFlight );
+			if ( 7!=cant )
+			{
+
+				printf("\nError leyendo datos desde csv. iteracion: %d", i);
+
+				// en caso de error se libera str_id
+				pFree(str_id);
+				break;
+			}
+
+		}
+
+		// se guarda el ID del csv
+		if( str_id!=NULL )
+		{
+			idTxt= atoi(str_id);
+		}
+		else
+		{
+			idTxt= -1;
+		}
+
+
+
+		// cierre de archivo en "r"
+		if(FILE_close( pTxt ))
+		{
+			printf( "\nError en cierre de archivo binario" );
+		}
+
 	}
 
-	// se leen los datos del archivo de texto
 
-
-
+	free(passengerAux0);
 
 	return retorno;
 }
