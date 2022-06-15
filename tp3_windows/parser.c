@@ -199,9 +199,9 @@ int parser_PassengerToText(FILE* pFile , LinkedList* pArrayListPassenger)
 
 
 
-	//el bucle se repetira tantas veces como elementos tenga la lista;
+	//el bucle se repetira tantas veces como elementos tenga la lista-1 por el elemento que contiene solo el ultimo id;
 
-	for(i=0; i<lengthOfList; i++)
+	for(i=0; i<lengthOfList-1; i++)
 	{
 		// optener el puntero de la posicion i de la lista
 		passengerAux0= (Passenger*) ll_get(pArrayListPassenger , i);
@@ -265,9 +265,9 @@ int parser_PassengerToBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 	int lengthOfList = ll_len(pArrayListPassenger);
 
 
-	// se controla que se repita tanta cantidad de escrituras como tamaño de la lista
+	// el bucle se repetira tantas veces como elementos tenga la lista-1 por el elemento que contiene solo el ultimo id;
 	cant=0;
-	for( i=0; i<lengthOfList; i++ )
+	for( i=0; i<lengthOfList-1; i++ )
 	{
 
 

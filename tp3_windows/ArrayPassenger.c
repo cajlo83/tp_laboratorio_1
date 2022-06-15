@@ -9,6 +9,7 @@
 #include "ArrayPassenger.h"
 
 
+
 int initPassengers(Passenger* list, int len)
 {
 	int i;
@@ -57,55 +58,37 @@ int searchEmptyPassenger(Passenger* list, int len)
 	return -1;
 }
 
-int addPassenger(Passenger* list, int len, int id, char name[],char lastName[],float price,int typePassenger, char flycode[])
+int Passenger_NewAdition(Passenger* pPassenger, int id, char name[],char lastName[],float price,int typePassenger, char flycode[], int statusFlight )
 {
-	int i, pos;
+	int retorno= 0;
 
-
-	//checks Invalid length
-	if( len<0 )
+	if ( pointerIsNull(pPassenger) )
 	{
-		return -1;
+		retorno= -1;
+	}
+	else
+	{
+		//setters
+
+		Passenger_setNombre(pPassenger, name);
+		Passenger_setApellido(pPassenger, lastName);
+		Passenger_setCodigoVuelo(pPassenger, flycode);
+		Passenger_setPrecio(pPassenger, price);
+		Passenger_setTipoPasajero(pPassenger, typePassenger);
+		Passenger_setStatusFlight(pPassenger, statusFlight);
+
+		// sets id
+		Passenger_setId(pPassenger, id);
+
+		//no more empty
+		pPassenger->isEmpty=0;
+
+		retorno= id;
 	}
 
 
-	//checks NULL pointer
-	for( i=0; i<len ; i++)
-	{
-		if( (list+i) == NULL )
-		{
-			printf( "falla 2" );
-			return -1;
-		}
-	}
 
-	//checks free space
-	pos=searchEmptyPassenger(list, len);
-
-	if( pos==-1 )
-	{
-		printf( "falla 3" );
-		return -1;
-	}
-
-
-
-	//setters
-
-
-	strcpy(list[pos].name, name );
-	strcpy(list[pos].lastName, lastName );
-	strcpy(list[pos].flycode, flycode );
-	list[pos].price= price;
-	list[pos].typePassenger= typePassenger;
-
-	// auto ID
-	list[pos].id=id;
-
-	//no more empty
-	list[pos].isEmpty=0;
-
-	return 0;
+	return retorno;
 }
 
 void Tipo_printAll( eTipo *list, int len )
@@ -312,8 +295,9 @@ void printVuelos( eVuelo *list, int len )
 
 }
 
-void elijeVuelos( char* dest, eVuelo* list, int len )
+eVuelo elijeVuelos( char* dest, eVuelo* list, int len )
 {
+
 	int flag;
 	int i, id;
 
@@ -343,7 +327,7 @@ void elijeVuelos( char* dest, eVuelo* list, int len )
 	}while( flag );
 
 
-	strcpy( dest, list[i].code );
+	return list[i];
 
 }
 

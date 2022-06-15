@@ -298,16 +298,41 @@ Config configFile(char* path, char* pathCsv, char* pathBin)
 	return config;
 }
 
+/**
+ * @brief sets next passenger's ID
+ *
+ * @param listaPasajeros_buffer LinkedList*
+ * @param config id's saved data
+ * @return current id if ok, -1 if error
+ */
 int configIdCurrent( LinkedList* listaPasajeros_buffer, Config config)
 {
 
 	int retorno;
-	Passenger* PassengerAux;
+	Passenger* passengerAux= NULL;
 
+	// chequea cual es el id actual, que el csv tendra ventaja por poderse editar directamente desde el archivo
+	if ( config.idTxt>=config.idBin )
+	{
+		// crea un nuevo passenger que tiene seteado el mismo id que el passenger anterior y lo agrega al linkedlist
+		passengerAux= Passenger_new();
+		if (Passenger_setId(passengerAux, config.idTxt) )
+		{
+			ll_add(listaPasajeros_buffer, passengerAux);
+			retorno= config.idTxt;
+		}
+		else
+		{
+			retorno= -1;
+		}
+	}
+	else //retorna -1 en caso de error en informacion guardada
+	{
+		retorno= -1;
+	}
 
 
 	return retorno;
-
 }
 
 

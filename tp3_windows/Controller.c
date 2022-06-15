@@ -166,14 +166,113 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
  *
  * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return last added ID
  *
  */
 int controller_addPassenger(LinkedList* pArrayListPassenger)
 {
+	// variables de control de entrada y salida de datos
+	int retorno, idCurrent;
+
+	// varaibles de almacenamiento de nuevos datos
+	char name[NOMBRE_APELLIDO];
+	char lastName[NOMBRE_APELLIDO];
+	char flycode[CODIGO_VUELO];
+	float price;
+	int typePassenger;
+	int statusFlight;
+
+	// se crea puntero auxiliar de pasajero
+	Passenger* passengerAux;
+
+	// estrucutras de tipo y estado de vuelo
+
+	int lenTipos=3;
+	eTipo tipos[]={ {"EconomyClass", CLASE_ECONOMICA},{"ExecutiveClass", CLASE_EJECUTIVO},{"FirstClass", CLASE_PRIMERA} };
+	eTipo tipoAux;
+
+			/*
+			1- BA2491A - Aterrizado
+			2- IB0800A - Aterrizado
+			3- TU6789B  - Aterrizado
+
+			4- MM0987B  - En Horario
+			5- FR5678G  - En Horario
+
+			6- GU2345F  - En Vuelo
+
+			7- HY4567D  - Demorado
+			8- BR3456J -  Demorado
+			*/
+	int lenVuelos= 8;
+	eVuelo vuelos[]= { {1 ,"BA2491A",STATUS_ATERRIZADO }, {2 ,"IB0800A",STATUS_ATERRIZADO }, {3 ,"TU6789B",STATUS_ATERRIZADO }, {4 ,"MM0987B",STATUS_EN_HORARIO }, {5 ,"FR5678G",STATUS_EN_HORARIO }, {6 ,"GU2345F",STATUS_EN_VUELO }, {7 ,"HY4567D",STATUS_DEMORADO }, {8 ,"BR3456J",STATUS_DEMORADO } };
+	eVuelo vueloAux;
 
 
-    return 1;
+	// se calcula el tamaño de la linkedlist actual
+	int pArrayListPassenger_len =ll_len(pArrayListPassenger);
+
+	// se accede a la ultimo puntero almacenado en lista, previamente preseteada con informacion del ultimo id que ya se uso y se almacena en auxiliar
+	passengerAux= ll_get(pArrayListPassenger, pArrayListPassenger_len-1 );
+
+	// si se puede leer el id almacenado, inicia proceso de pedido de datos
+	if( Passenger_getId(passengerAux, &idCurrent) )
+	{
+
+			// name
+			stringScan(name, NOMBRE_APELLIDO, "\nIngrese el nombre del pasajero_ ");
+			stringNameFormat( name, NOMBRE_APELLIDO );
+
+			// last name
+			stringScan(lastName, NOMBRE_APELLIDO, "\nIngrese el apellido del pasajero_ ");
+			stringNameFormat( lastName, NOMBRE_APELLIDO );
+
+			//price
+			price= floatScan("\nIngrese monto a cobrar al cliente_ ");
+
+
+			//type
+			printf("\t**tipos de pasajeros disponibles**");
+			typePassenger= Tipo_elegir( tipos, lenTipos );
+
+			// select flight
+
+				// flycode
+			vueloAux= elijeVuelos(flycode, vuelos, lenVuelos);
+
+			strcpy( flycode, vueloAux.code );
+
+
+				// statusFlight
+			statusFlight= vueloAux.estado;
+
+
+
+			// se guardan datos solicitados en el puntero auxilia de Passenger, con la id preseteada+1, debe devolver dicha id+1
+			idCurrent = Passenger_NewAdition(passengerAux, idCurrent +1, name, lastName,price, typePassenger,  flycode);
+			if ( idCurrent>0 )
+			{
+
+				//anouncement of new ticket
+				printf( "\nSe cargo el usuario:" );
+				printOnePassenger( passengerAux );
+
+				// una vez guardado el usuario, se agrega informacion del proximo id a la linkedlist con otro nuevo usuario
+				passengerAux= Passenger_new();
+				Passenger_setId(passengerAux, idCurrent);
+				ll_add(pArrayListPassenger, passengerAux);
+
+				retorno= idCurrent;
+			}
+			else
+			{
+				printf( "\nno fue posible el alta del usuario" );
+				retorno= 0;
+			}
+
+	}
+
+    return retorno;
 }
 
 /** \brief Modificar datos de pasajero

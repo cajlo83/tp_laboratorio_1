@@ -46,15 +46,15 @@
 
 struct
 {
-char description[DESCRIPTION];
-int id;
+	char description[DESCRIPTION];
+	int id;
 
 }typedef eTipo;
 
 struct
 {
-char description[DESCRIPTION];
-int id;
+	char description[DESCRIPTION];
+	int id;
 
 
 }typedef eStatus;
@@ -63,9 +63,9 @@ int id;
 
 struct
 {
-char code[CODIGO_VUELO];
-int id;
-int estado;
+	int id;
+	char code[CODIGO_VUELO];
+	int estado;
 
 }typedef eVuelo;
 
@@ -91,10 +91,8 @@ int initPassengers(Passenger* list, int len);
  */
 int searchEmptyPassenger(Passenger* list, int len);
 
-/** \brief add in a existing list of passengers the values received as parameters
-* in the first empty position
-* \param list passenger*
-* \param len int
+/** \brief add's data for a new passenger
+* \param pPassenger passenger*
 * \param id int
 * \param name[] char
 * \param lastName[] char
@@ -104,7 +102,7 @@ int searchEmptyPassenger(Passenger* list, int len);
 * \return int Return (-1) if Error [Invalid length or NULL pointer or without
 * free space] - (0) if Ok
 */
-int addPassenger(Passenger* list, int len, int id, char name[],char lastName[],float price,int typePassenger, char flycode[]);
+int Passenger_NewAdition(Passenger* pPassenger, int id, char name[],char lastName[],float price,int typePassenger, char flycode[], int statusFlight );
 
 /** \brief print the content of eTipo array
 *
@@ -306,8 +304,10 @@ void printVuelos( eVuelo *list, int len );
  *
  * @param list eTipo*
  * @param len	list's lenght
+ *
+ * @return selected flight
  */
-void elijeVuelos( char* dest, eVuelo *list, int len );
+eVuelo elijeVuelos( char* dest, eVuelo *list, int len );
 
 /**
  * @brief randomly select the flight ID shown from a list
