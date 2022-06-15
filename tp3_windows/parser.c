@@ -1,17 +1,11 @@
 
 #include "parser.h"
 
-/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
- *
- */
+
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 {
 
-	int retorno= 0;
+	int retorno= -2;
 
 
 	// variables tipo caracter donde recibir los datos del archivo
@@ -29,14 +23,15 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 
 	int typeAux, statusAux, i, cant;
 
-	if ( !parser_PassengerFromText(pFile, pArrayListPassenger) )
-	{
-		retorno=-1;
-	}
+
 
 	// Falso escaneo para titulo
 	fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", str_id, str_name, str_lastName,str_price, str_flycode, str_typePassenger,str_statusFlight );
 
+	if ( feof(pFile) )
+	{
+		retorno= 0;
+	}
 
 	i=0;
 	while(!feof(pFile))
@@ -97,31 +92,84 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 
 	}
 
+	// verifica si hubo error o si debe retornar un id
+	if ( retorno==-2 )
+	{
+		retorno= atoi(str_id);
+	}
 
     return retorno;
 }
-
-
-
-
-
-/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo binario).
+/*
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ *
+ *
+ *
  *
  */
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
+	int retorno= 0;
+	int idAux;
+	Passenger* passengerAux0= NULL;
+	static int size_Passenger= sizeof(Passenger);
+	int cant;
 
-    return 1;
+	// se ejecuta bucle de lectura mientras no se llegue al final del archivo
+	while(!feof(pFile))
+	{
+		// se crea direccion de memoria para pasajero a leer
+		passengerAux0= Passenger_new();
+
+		// se guardan datos de pasajero en nueva direccion
+		cant=fread(passengerAux0,size_Passenger ,1,pFile);
+
+
+
+		// se verifica la devolucion de fread
+
+		if(cant!=1)
+		{
+			if(feof(pFile))
+			{
+				printf("fin de lectura de archivo binario");
+				break;
+			}
+			else
+			{
+				printf("No leyo el ultimo registro de archivo binario");
+				retorno= -1;
+				break;
+			}
+		}
+
+		// se agregan los datos al linkedlist
+		ll_add(pArrayListPassenger , (Passenger*) passengerAux0);
+
+		//se guarda ultimo id leido
+		if (Passenger_getId( passengerAux0, &idAux))
+		{
+			retorno= idAux;
+		}
+
+		//printOnePassenger(*passengerAux0);
+
+	}
+
+    return retorno;
 }
-
-
+/*
+ *
+ *
+ *
+ *
+ *
+ */
 int parser_PassengerToText(FILE* pFile , LinkedList* pArrayListPassenger)
 {
-	int retorno= 1;
+
+	int idMax;
+	int retorno;
 
 	// variables para los getters
 	int id;
@@ -168,7 +216,7 @@ int parser_PassengerToText(FILE* pFile , LinkedList* pArrayListPassenger)
 									// id										// name										// lastname													// flycode								// price							// typePassenger 													// statusFlight
 		if ( !(Passenger_getId(passengerAux0, &id ) && Passenger_getNombre(passengerAux0, name) && Passenger_getApellido(passengerAux0, lastName) && Passenger_getCodigoVuelo(passengerAux0, flycode) && Passenger_getPrecio(passengerAux0, &price) && Passenger_getTipoPasajero(passengerAux0, &typePassenger) && Passenger_getStatusFlight(passengerAux0, &statusFlight) ) )
 		{
-			retorno= 0;
+			idMax= -1;
 			break;
 		}
 
@@ -181,20 +229,33 @@ int parser_PassengerToText(FILE* pFile , LinkedList* pArrayListPassenger)
 		passenger_typeDecoder(typePassenger, str_typePassenger);
 
 
-		// se agrega la informacion al archivo
-		fprintf( pFile,"%d,%s,%s,%.2f,%s,%s,%s\n", id,name,lastName,price,flycode,str_typePassenger,str_statusFlight );
+		// se agrega nueva linea de informacion al archivo
+		fprintf( pFile,"\n%d,%s,%s,%.2f,%s,%s,%s", id,name,lastName,price,flycode,str_typePassenger,str_statusFlight );
+
+		idMax=id;
 	}
 
 
+	// se verifican retorno y se anuncia resultado
+	if( idMax>0)
+	{
+		retorno= idMax;
+		printf("\nSe guardaron %d pasajeros ", i);
+	}
 
 
 	return retorno;
 }
-
+/*
+ *
+ *
+ *
+ */
 int parser_PassengerToBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
 
 	// variables genericas
+	int retorno, idMax;
 	int i, cant, cantAux;
 	static int size_Passenger= sizeof ( Passenger );
 
@@ -223,21 +284,21 @@ int parser_PassengerToBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 	}
 
 
-	// anuncio de resultados
+	// verificacion de retorno y anuncio de resultados
 	if (cant<lengthOfList)
 	{
 		printf("\nError al escribir el archivo");
+		retorno= -1;
 	}
-	else
+	else if( Passenger_getId(passengerAux0, &idMax) )
 	{
+		retorno= idMax;
 		printf("\nSe escribieron %d pasajeros", cant);
 	}
 
 
 
-
-
-	return 1;
+	return retorno;
 
 }
 

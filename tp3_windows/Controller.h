@@ -13,22 +13,13 @@
 
 #include "personalio.h"
 #include "LinkedList.h"
+#include "personalio.h"
 
 #include "ArrayPassenger.h"
 #include "parser.h"
 
 
 
-struct
-{
-
-	int idTxt;
-	int idBin;
-
-
-}typedef Config;
-
-int initConfig(char* pathTxt, char* pathBin);
 
 int mainMenu(int min, int max);
 
@@ -45,6 +36,6 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger);
 
 
 
-
+// exit value:
 
 #endif /* CONTROLLER_H_ */

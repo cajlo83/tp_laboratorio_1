@@ -43,7 +43,7 @@ struct
 	float price;
 	int typePassenger;
 	int statusFlight; // antes llamado flyState
-	//int isEmpty;
+	int isEmpty;
 
 }typedef Passenger;
 
